@@ -1,0 +1,40 @@
+# ---- Python basics ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+
+# ---- Virtual environments ----
+venv/
+.env/          # if you use `python -m venv .env`
+.venv/
+# (whatever folder name you choose for the venv goes here)
+
+# ---- IDE & editor junk ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- OS cruft ----
+.DS_Store
+Thumbs.db
+
+# ---- Secrets / keys ----
+.env            # If you keep OPENAI_API_KEY in a dotenv file
+*.key
+*.pem
+
+# ---- Large or generated data ----
+embeddings/policy_index.faiss
+embeddings/policy_chunks.pkl
+data/sample_claims/
+*.pdf           # Ignore big PDFs by default; commit only the one you need
+*.zip
+
+# ---- Logs & misc ----
+*.log
