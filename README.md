@@ -14,7 +14,7 @@ source venv/bin/activate  # or .\venv\Scripts\activate on Windows
 pip install -r requirements.txt
 
 # One‑time: embed the policy document
-python embeddings/embed_policy.py data/static/policy_rules.pdf
+python -m embeddings.embed_policy data/static/policy_rules.pdf
 
 # Run the Streamlit app
 streamlit run app.py
