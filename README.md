@@ -1,27 +1,60 @@
-# Netcare Auto Assess – Demo Claim Pre‑Assessment
+---
 
-This repo is a **minimal demo** of a pipeline that:
-1. Loads the static GapCare policy PDF, chunks & embeds it to a FAISS index.
-2. Accepts two PDFs (medical scheme statement + provider invoice).
-3. OCRs/extracts text, parses key fields.
-4. Retrieves relevant policy rules.
-5. Asks GPT‑4o‑mini for a JSON pre‑assessment.
+    ## 🛠 Makefile Usage
 
-## Quick start
-```bash
-python -m venv venv
-source venv/bin/activate  # or .\venv\Scripts\activate on Windows
-pip install -r requirements.txt
+    You can use the provided `Makefile` to set up and run the demo easily.
 
-# One‑time: embed the policy document
-python -m embeddings.embed_policy data/static/policy_rules.pdf
+    ### 📦 Setup (installs everything you need)
 
-# Run the Streamlit app
-streamlit run app.py
-```
+    ```bash
+    make setup
+    ```
 
-Set `OPENAI_API_KEY` in .env before running.
+    This will:
 
-## Repo layout
-See the directory tree for module purpose.  Each sub‑package has a single file
-to keep the demo small.
+    - Install required system-level packages (like `tesseract-ocr`) using `apt`
+    - Create a local Python virtual environment (`venv/`)
+    - Install all required Python packages inside the `venv`
+
+    ⚠️ This **will install Tesseract OCR and Poppler globally** on your system.
+
+    ---
+
+    ### 💾 Embed the policy document
+
+    ```bash
+    make embed
+    ```
+
+    This will process `data/static/policy_rules.pdf` and save the FAISS index in `embeddings/`.
+
+    ---
+
+    ### ▶️ Run the Streamlit app
+
+    ```bash
+    make run
+    ```
+
+    Launches the demo UI where you can upload medical statements and get automated pre-assessments.
+
+    ---
+
+    ## 🧹 Uninstall / Cleanup
+
+    To remove the system packages installed during setup:
+
+    ```bash
+    sudo apt-get remove --purge tesseract-ocr poppler-utils
+    sudo apt-get autoremove
+    ```
+
+    Note: This does **not** touch your Python virtual environment or project files.
+
+    If you want to clean everything:
+
+    ```bash
+    rm -rf venv/ embeddings/policy_index.faiss embeddings/policy_chunks.pkl
+    ```
+
+    ---
