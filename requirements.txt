@@ -1,0 +1,10 @@
+pymupdf
+pytesseract
+Pillow
+faiss-cpu
+openai
+langchain
+streamlit
+tiktoken
+unidecode
+python-dotenv
