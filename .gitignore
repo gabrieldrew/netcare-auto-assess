@@ -38,3 +38,6 @@ data/sample_claims/
 
 # ---- Logs & misc ----
 *.log
+
+# ---- Env variables ----
+.env
