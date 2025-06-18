@@ -1,4 +1,4 @@
-.PHONY: setup embed run
+.PHONY: setup embed run-backend run-frontend
 
 setup:
 	sudo apt-get update
@@ -10,5 +10,8 @@ setup:
 embed:
 	venv/bin/python -m embeddings.embed_policy data/static/policy_rules.pdf
 
-run:
-	venv/bin/streamlit run app.py
+run-backend:
+        venv/bin/uvicorn backend.main:app --reload --port 8000
+
+run-frontend:
+        cd frontend && npm install && npm run dev

@@ -4,8 +4,9 @@ Pillow
 faiss-cpu
 openai
 langchain
-streamlit
 tiktoken
 unidecode
 python-dotenv
 reportlab
+fastapi
+"uvicorn[standard]"
