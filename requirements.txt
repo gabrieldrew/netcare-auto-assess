@@ -9,4 +9,5 @@ unidecode
 python-dotenv
 reportlab
 fastapi
-"uvicorn[standard]"
+uvicorn[standard]
+python-multipart

@@ -11,7 +11,7 @@ embed:
 	venv/bin/python -m embeddings.embed_policy data/static/policy_rules.pdf
 
 run-backend:
-        venv/bin/uvicorn backend.main:app --reload --port 8000
+	venv/bin/uvicorn backend.main:app --reload --port 8000
 
 run-frontend:
-        cd frontend && npm install && npm run dev
+	cd frontend && npm install && npm run dev
