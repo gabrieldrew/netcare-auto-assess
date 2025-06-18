@@ -37,9 +37,6 @@
 }
  
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply min-h-screen;
     background: #D0E9F3;
