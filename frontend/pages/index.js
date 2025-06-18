@@ -62,10 +62,10 @@ export default function Home() {
         onDragOver={(e) => handleDrag(e, fileType)}
         onDrop={(e) => handleDrop(e, setter)}
       >
-        <input 
-          className="file-input-hidden" 
-          type="file" 
-          accept="application/pdf" 
+        <input
+          className="file-input-hidden"
+          type="file"
+          accept=".pdf,image/*"
           onChange={e => setter(e.target.files[0])}
           id={`file-${fileType}`}
         />
@@ -170,7 +170,7 @@ export default function Home() {
               file={medical}
               setter={setMedical}
               label="Medical Scheme Statement"
-              description="Upload your medical scheme statement PDF"
+              description="Upload your medical scheme statement (PDF or image)"
               fileType="medical"
               icon={<DocumentIcon />}
             />
@@ -179,7 +179,7 @@ export default function Home() {
               file={provider}
               setter={setProvider}
               label="Provider Invoice"
-              description="Upload the healthcare provider invoice PDF"
+              description="Upload the healthcare provider invoice (PDF or image)"
               fileType="provider"
               icon={<InvoiceIcon />}
             />
@@ -188,7 +188,7 @@ export default function Home() {
               file={claim}
               setter={setClaim}
               label="Claim Form"
-              description="Upload the completed GapCover claim form PDF"
+              description="Upload the completed GapCover claim form (PDF or image)"
               fileType="claim"
               icon={<ClipboardIcon />}
             />

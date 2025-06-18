@@ -27,6 +27,14 @@ make embed
 
 This will process `data/static/policy_rules.pdf` and save the FAISS index in `embeddings/`.
 
+You can also OCR standalone PDFs or images using the general helper in `ocr`:
+
+```python
+from ocr import extract_text
+
+text = extract_text("my_scan.png")
+```
+
 ---
 
 ### ▶️ Run the backend API
@@ -43,11 +51,11 @@ Starts a FastAPI server on `http://localhost:8000` that exposes a single `/asses
 make run-frontend
 ```
 
-Launches the React based UI where you can upload PDF documents and view the assessment results.
+Launches the React based UI where you can upload PDF or image documents and view the assessment results.
 
-### Upload PDFs
+### Upload Documents
 
-The app requires three PDFs:
+The app requires three files (PDF or image):
 
 1. Medical Scheme Statement
 2. Provider Invoice
