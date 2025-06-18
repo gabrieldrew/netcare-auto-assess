@@ -3,8 +3,8 @@ import streamlit as st
 from assessment.assessor import assess_claim
 from ocr.pdf_reader import extract_text_from_pdf
 from parsing.statement_parser import parse_statement
+from parsing.claim_form_ai import ai_extract
 from retrieval.vector_search import load_policy_index, retrieve_rules
-from assessment.assessor import assess_claim
 
 def display_assessment_result(result):
     """Display the assessment result in a user-friendly format."""
@@ -46,12 +46,16 @@ if "policy_index" not in st.session_state:
 
 claim_pdf = st.file_uploader("Medical Scheme Statement PDF", type=["pdf"])
 provider_pdf = st.file_uploader("Provider Invoice PDF", type=["pdf"])
+claim_form_pdf = st.file_uploader("GapCover Claim Form PDF", type=["pdf"])
 
-if st.button("Run pre‑assessment") and claim_pdf and provider_pdf:
+if st.button("Run pre‑assessment") and claim_pdf and provider_pdf and claim_form_pdf:
     with st.spinner("Processing…"):
         claim_text = extract_text_from_pdf(claim_pdf)
         provider_text = extract_text_from_pdf(provider_pdf)
+        claim_form_text = extract_text_from_pdf(claim_form_pdf)
         claim_struct = parse_statement(claim_text + "\n" + provider_text)
+        claim_meta = ai_extract(claim_form_text)
+        claim_struct.update(claim_meta)
         rules = retrieve_rules(st.session_state.policy_index, claim_struct)
         result = assess_claim(claim_struct, rules)
     
@@ -62,6 +66,8 @@ if st.button("Run pre‑assessment") and claim_pdf and provider_pdf:
     with st.expander("Technical Details"):
         st.write("**Extracted Claim Data:**")
         st.json(claim_struct)
+        st.write("**Claim Form Fields:**")
+        st.json(claim_meta)
         st.write("**Raw Assessment Result:**")
         st.json(result)
     
