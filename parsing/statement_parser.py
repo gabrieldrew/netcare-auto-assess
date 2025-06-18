@@ -25,7 +25,9 @@ PROMPT_TEMPLATE = """
 
     • All rand amounts → numbers with two decimals (no "R", no commas).
 
-    • Feel free to include **any extra keys** that add value – do *not* invent data.
+    • Feel free to include **any extra keys** that add value
+
+    Most importantly, do NOT invent data.
 """
 
 

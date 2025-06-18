@@ -1,7 +1,10 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-import io
 import base64
+import io
+import json
+import logging
+
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 from assessment.assessor import assess_claim
 from ocr.pdf_reader import extract_text_from_pdf
@@ -9,6 +12,12 @@ from parsing.claim_form_ai import ai_extract
 from parsing.statement_parser import parse_statement
 from retrieval.vector_search import load_policy_index, retrieve_rules
 from utils.pdf_generator import generate_assessment_pdf
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
 app = FastAPI(title="GapCare Assessment API")
 app.add_middleware(
@@ -19,6 +28,7 @@ app.add_middleware(
 )
 
 policy_index = None
+
 
 @app.on_event("startup")
 def startup():
@@ -53,11 +63,20 @@ async def assess_claim_endpoint(
         pdf_buffer = generate_assessment_pdf(claim_data, result, form_data)
         pdf_b64 = base64.b64encode(pdf_buffer.getvalue()).decode()
 
+        logging.info(
+            json.dumps(
+                {"claimData": claim_data, "formData": form_data, "result": result},
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+
         return {
             "claimData": claim_data,
             "formData": form_data,
             "result": result,
             "pdf": pdf_b64,
         }
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
