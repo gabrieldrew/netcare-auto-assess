@@ -36,6 +36,10 @@ data/sample_claims/
 *.pdf           # Ignore big PDFs by default; commit only the one you need
 *.zip
 
+# Node artifacts
+node_modules/
+frontend/.next/
+
 # ---- Logs & misc ----
 *.log
 

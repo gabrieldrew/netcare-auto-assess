@@ -13,6 +13,7 @@ This will:
 - Install required system-level packages (like `tesseract-ocr`) using `apt`
 - Create a local Python virtual environment (`venv/`)
 - Install all required Python packages inside the `venv`
+- Ensure you have Node.js 18+ installed for the Next.js frontend
 
 ⚠️ This **will install Tesseract OCR and Poppler globally** on your system.
 
@@ -28,13 +29,21 @@ This will process `data/static/policy_rules.pdf` and save the FAISS index in `em
 
 ---
 
-### ▶️ Run the Streamlit app
+### ▶️ Run the backend API
 
 ```bash
-make run
+make run-backend
 ```
 
-Launches the demo UI where you can upload medical statements and get automated pre-assessments.
+Starts a FastAPI server on `http://localhost:8000` that exposes a single `/assess` endpoint.
+
+### ▶️ Run the Next.js frontend
+
+```bash
+make run-frontend
+```
+
+Launches the React based UI where you can upload PDF documents and view the assessment results.
 
 ### Upload PDFs
 
