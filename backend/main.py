@@ -7,7 +7,7 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from assessment.assessor import assess_claim
-from ocr.pdf_reader import extract_text_from_pdf
+from ocr import extract_text
 from parsing.claim_form_ai import ai_extract
 from parsing.statement_parser import parse_statement
 from retrieval.vector_search import load_policy_index, retrieve_rules
@@ -43,9 +43,9 @@ async def assess_claim_endpoint(
     claim: UploadFile = File(...),
 ):
     try:
-        medical_text = extract_text_from_pdf(io.BytesIO(await medical.read()))
-        provider_text = extract_text_from_pdf(io.BytesIO(await provider.read()))
-        claim_text = extract_text_from_pdf(io.BytesIO(await claim.read()))
+        medical_text = extract_text(io.BytesIO(await medical.read()))
+        provider_text = extract_text(io.BytesIO(await provider.read()))
+        claim_text = extract_text(io.BytesIO(await claim.read()))
 
         medical_data = parse_statement(medical_text)
         provider_data = parse_statement(provider_text)
