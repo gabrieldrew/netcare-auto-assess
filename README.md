@@ -36,6 +36,14 @@ make run
 
 Launches the demo UI where you can upload medical statements and get automated pre-assessments.
 
+### Upload PDFs
+
+The app requires three PDFs:
+
+1. Medical Scheme Statement
+2. Provider Invoice
+3. GapCover Claim Form (AI parsing adds a small OpenAI cost of ~R0.15 per claim)
+
 ---
 
 ## 🧹 Uninstall / Cleanup
