@@ -49,26 +49,33 @@ if "policy_index" not in st.session_state:
 medical_aid_statement_pdf = st.file_uploader(
     "Medical Scheme Statement PDF", type=["pdf"]
 )
-provider_pdf = st.file_uploader("Provider Invoice PDF", type=["pdf"])
+provider_invoice_pdf = st.file_uploader("Provider Invoice PDF", type=["pdf"])
 claim_form_pdf = st.file_uploader("GapCover Claim Form PDF", type=["pdf"])
 
 if (
     st.button("Run pre‑assessment")
     and medical_aid_statement_pdf
-    and provider_pdf
+    and provider_invoice_pdf
     and claim_form_pdf
 ):
     with st.spinner("Processing…"):
-        medical_aid_statement_text = extract_text_from_pdf(medical_aid_statement_pdf)
-        provider_text = extract_text_from_pdf(provider_pdf)
+        medical_statement_text = extract_text_from_pdf(medical_aid_statement_pdf)
+        provider_statement_text = extract_text_from_pdf(provider_invoice_pdf)
         claim_form_text = extract_text_from_pdf(claim_form_pdf)
-        claim_struct = parse_statement(
-            medical_aid_statement_text + "\n" + provider_text
-        )
-        claim_meta = ai_extract(claim_form_text)
-        claim_struct.update(claim_meta)
-        rules = retrieve_rules(st.session_state.policy_index, claim_struct)
-        result = assess_claim(claim_struct, rules)
+
+        medical_statement_data = parse_statement(medical_statement_text)
+        provider_statement_data = parse_statement(provider_statement_text)
+
+        claim_form_data = ai_extract(claim_form_text)
+
+        claim_data = {
+            "medical_aid_statement": medical_statement_data,
+            "provider_statement": provider_statement_data,
+            **claim_form_data,
+        }
+
+        rules = retrieve_rules(st.session_state.policy_index, claim_data)
+        result = assess_claim(claim_data, rules)
 
     st.subheader("Pre‑assessment Result")
     display_assessment_result(result)
@@ -76,9 +83,9 @@ if (
     # Show raw data in an expander for technical users
     with st.expander("Technical Details"):
         st.write("**Extracted Claim Data:**")
-        st.json(claim_struct)
+        st.json(claim_data)
         st.write("**Claim Form Fields:**")
-        st.json(claim_meta)
+        st.json(claim_form_data)
         st.write("**Raw Assessment Result:**")
         st.json(result)
 
