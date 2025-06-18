@@ -5,23 +5,38 @@ from config.openai_config import get_client
 
 PROMPT = """You are an expert claims assessor for a Gap Cover product.
 
-### Policy rules (excerpts)
+### Policy rules (complete)
 {rules}
 
 ### Claim information
 {claim}
 
 ### Instructions
-1. Determine whether the claim is covered.
-2. If covered, specify benefit numbers and payable amount (consider limits).
-3. If not covered, quote the rule that excludes it.
+1. Determine whether the claim is covered under any of the 12 GapCare benefits.
+2. If covered, specify the actual benefit names (not numbers) that apply.
+3. If not covered, quote the specific rule that excludes it.
+4. Consider all waiting periods, limits, and conditions.
 
 IMPORTANT: Return ONLY valid JSON with no additional text or formatting. Do not use markdown code blocks.
+
+Use these exact benefit names when applicable:
+- "In-Hospital Specialist cover"
+- "In-Hospital Co-payments and deductibles" 
+- "Co-payments for voluntary use of a non-network hospital"
+- "Specialists (out of Hospital)"
+- "Additional day to day"
+- "Maternity"
+- "Oncology"
+- "Emergency Departments"
+- "Trauma Counselling"
+- "Premium Waiver"
+- "Charges Above Sub Limits"
+- "Waiting Periods"
 
 Required JSON format:
 {{
   "covered": true/false,
-  "benefits": ["benefit1", "benefit2"],
+  "benefits": ["benefit name 1", "benefit name 2"],
   "payable_amount_ZAR": "amount or null",
   "explanation": "detailed explanation"
 }}
@@ -78,7 +93,8 @@ def assess_claim(claim_struct, rules):
     """
     client = get_client()
     prompt = PROMPT.format(
-        rules="\n---\n".join(rules[:5]), claim=json.dumps(claim_struct, indent=2)
+        rules="\n---\n".join(rules),  # Use all rules, not just first 5
+        claim=json.dumps(claim_struct, indent=2)
     )
 
     try:
