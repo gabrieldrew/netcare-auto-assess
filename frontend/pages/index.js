@@ -24,10 +24,16 @@ export default function Home() {
         body: formData,
       });
       const data = await res.json();
+
+      if (!res.ok || !data.result) {
+        throw new Error(data.detail || 'Invalid response from server');
+      }
+
       setResult(data);
     } catch (error) {
       console.error('Assessment failed:', error);
       alert('Assessment failed. Please try again.');
+      setResult(null);
     }
     setLoading(false);
   };
@@ -227,12 +233,12 @@ export default function Home() {
         </div>
 
         {/* Results Section */}
-        {result && (
+        {result && result.result && (
           <div className="results-section animate-fade-in">
             <div className="results-header">
               <h3 className="results-title">Assessment Results</h3>
-              <div className={`coverage-badge ${result.result.covered ? 'covered' : 'not-covered'}`}>
-                {result.result.covered ? '✓ Covered' : '✗ Not Covered'}
+              <div className={`coverage-badge ${result.result?.covered ? 'covered' : 'not-covered'}`}>
+                {result.result?.covered ? '✓ Covered' : '✗ Not Covered'}
               </div>
             </div>
 
@@ -240,20 +246,20 @@ export default function Home() {
               {/* Main Result Card */}
               <div className="result-card main-result">
                 <div className="result-header">
-                  <div className={`result-icon ${result.result.covered ? 'success' : 'error'}`}>
-                    {result.result.covered ? '✓' : '✗'}
+                  <div className={`result-icon ${result.result?.covered ? 'success' : 'error'}`}>
+                    {result.result?.covered ? '✓' : '✗'}
                   </div>
                   <div>
                     <h4 className="result-status">
-                      {result.result.covered ? 'Claim Approved' : 'Claim Declined'}
+                      {result.result?.covered ? 'Claim Approved' : 'Claim Declined'}
                     </h4>
-                    {result.result.payable_amount_ZAR && (
-                      <p className="result-amount">{result.result.payable_amount_ZAR}</p>
+                    {result.result?.payable_amount_ZAR && (
+                      <p className="result-amount">{result.result?.payable_amount_ZAR}</p>
                     )}
                   </div>
                 </div>
-                
-                {result.result.benefits && result.result.benefits.length > 0 && (
+
+                {result.result?.benefits && result.result.benefits.length > 0 && (
                   <div className="benefits-section">
                     <h5 className="benefits-title">Applicable Benefits</h5>
                     <div className="benefits-list">
@@ -271,7 +277,7 @@ export default function Home() {
               {/* Explanation Card */}
               <div className="result-card">
                 <h4 className="card-title">Detailed Explanation</h4>
-                <p className="explanation-text">{result.result.explanation}</p>
+                <p className="explanation-text">{result.result?.explanation}</p>
               </div>
 
               {/* Actions Card */}
