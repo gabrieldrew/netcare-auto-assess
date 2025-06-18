@@ -1,5 +1,3 @@
----
-
 ## 🛠 Makefile Usage
 
 You can use the provided `Makefile` to set up and run the demo easily.
@@ -56,5 +54,3 @@ If you want to clean everything:
 ```bash
 rm -rf venv/ embeddings/policy_index.faiss embeddings/policy_chunks.pkl
 ```
-
----
