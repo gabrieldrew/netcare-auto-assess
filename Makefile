@@ -8,7 +8,7 @@ setup:
 	venv/bin/pip install -r requirements.txt
 
 embed:
-	venv/bin/python -m embeddings.embed_policy data/static/policy_rules.pdf
+	venv/bin/python -m embeddings.embed_policy data/static/policy_rules.yml
 
 run-backend:
 	venv/bin/uvicorn backend.main:app --reload --port 8000

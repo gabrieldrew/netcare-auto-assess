@@ -1,0 +1,165 @@
+# ────────────────────────────────────────────────────────────────────────────────
+# NetcarePlus GapCare Policy Rules – v2025
+# Source: internal policy PDF
+# Overall annual limit: R195 000 per beneficiary
+# ────────────────────────────────────────────────────────────────────────────────
+meta:
+  currency: "ZAR"
+  annual_limit_per_beneficiary: 195000        # :contentReference[oaicite:0]{index=0}
+  pmb_excluded: true                          # Scheme PMBs are expressly excluded
+  escalation_contact: "Med Claim Assist"      # For manual overrides / referrals
+
+gap_options: ["GapCare300", "GapCare500"]
+
+waiting_periods:
+  general:
+    months: 3
+    accident_or_trauma_override: true
+  pre_existing:
+    months: 12
+  elective:
+    months: 12
+    medical_specialist_motivation_required: true                  # :contentReference[oaicite:1]{index=1}
+
+rules:
+
+# ───────────────────────────── 1 ─────────────────────────────
+- id: B1
+  title: "In-Hospital Specialist Cover"
+  applies_during: "inpatient_admission"
+  covered_entities: ["HPCSA-registered specialists", "Day admissions", "Maxillofacial"]
+  exclusions: ["Plastic surgery (scheme exclusion)"]
+  conditions:
+    - scheme_processed_claim == true
+    - visit_date WITHIN hospital_stay
+  payout:
+    base_rate: "scheme_tariff OR NetcarePlus_rate"
+    percentage_by_option:
+      GapCare300: 3.0          # 300 %
+      GapCare500: 5.0          # 500 %
+    payable_formula: "min(claimed_amount , percentage * base_rate)"
+  notes: "Always pay the lesser of claimed or calculated amount"
+
+# ───────────────────────────── 2 ─────────────────────────────
+- id: B2
+  title: "In-Hospital Co-payments & Deductibles"
+  applies_during: "inpatient_or_day_clinic"
+  conditions:
+    - scheme_processed_claim == true
+    - deductible_reason != 'use_of_non_network_provider'
+  payout:
+    logic: |
+      if scheme_paid_amount > 0:
+          pay_shortfall = deductible - scheme_paid_amount
+      else:
+          pay_shortfall = 0
+  notes: "No cover when scheme entirely rejects on benefit exclusion"
+
+# ───────────────────────────── 3 ─────────────────────────────
+- id: B3
+  title: "Co-payment for Voluntary Non-Network Hospital"
+  scope: "Hospital/Day-clinic account only"
+  limits:
+    non_netcare:
+      max_amount: 10600          # ZAR
+      max_admissions_per_year: 1
+    netcare: "unlimited"
+  workflow:
+    non_netcare: "member-pays-then-claim"
+    netcare: "hospital obtains NetcarePlus authorisation → bills direct"
+  notes: "Akeso hospitals counted as Netcare"
+
+# ───────────────────────────── 4 ─────────────────────────────
+- id: B4
+  title: "Specialists – Out of Hospital"
+  applies_under_gap_options: ["GapCare300", "GapCare500"]
+  conditions:
+    - scheme_paid_amount >= 1              # cover only after any scheme payment
+    - provider_type == 'HPCSA_Specialist'
+    - member_not_in_self_funding_gap
+  exclusions: ["GPs", "Dentists", "Orthodontists", "Allied providers",
+               "Pathology", "Radiology", "Medication", "Optometry"]
+  payout:
+    base_rate: "scheme_tariff OR NetcarePlus_rate"
+    percentage_by_option:
+      GapCare300: 3.0
+      GapCare500: 5.0
+
+# ───────────────────────────── 5 ─────────────────────────────
+- id: B5
+  title: "Additional Day-to-Day Benefit"
+  applies_under_gap_options: ["GapCare300", "GapCare500"]
+  annual_limit_per_beneficiary: 20000
+  covered_costs: ["Specialist consultations (rooms)",
+                  "Specialised radiology",
+                  "Dentistry (trauma, accident, oral cancer)",
+                  "Pathology when scheme savings exhausted"]
+  referral_requirement: "GP/Specialist referral ≤1 month old OR follow-up post-admission"
+  payout_rule: "300 % or 500 % as per option; lesser of calculated vs claimed"
+
+# ───────────────────────────── 6 ─────────────────────────────
+- id: B6
+  title: "Maternity Package"
+  sublimits:
+    private_or_semi_private_ward: "Only GapCare300 & 500"
+    maternity_global_limit: 25000                       # prenatal scans/tests
+  components:
+    - inpatient_specialist_shortfall → rule: B1
+    - outpatient_specialist_shortfall → rule: B4
+    - baby_immunisations
+    - booking_fee (Netcare hospitals only)
+    - antenatal_classes_and_4D_ultrasound (if in booking fee)
+  notes: "No executive/VIP rooms"
+
+# ───────────────────────────── 7 ─────────────────────────────
+- id: B7
+  title: "Oncology"
+  coverage:
+    - non_network_oncologist_consults (in/out hospital)
+    - scheme_oncology_sub-limit_copayments
+  payout: "300 % / 500 % of base tariff, lesser of claimed vs calculated"
+  exclusions: ["Analgesics, sleeping pills, non-oncology medication",
+               "Scheme oncology exclusion cases"]
+
+# ───────────────────────────── 8 ─────────────────────────────
+- id: B8
+  title: "Emergency Department Booster"
+  limits:
+    standard: 20000   # per policy per year
+    hospital_plan: 10000   # if no day-to-day benefit
+  included_costs: ["ED doctor", "Pathology", "Radiology", "Medication",
+                   "External medical items (e.g. crutches)"]
+  trigger: "Scheme day-to-day benefits or savings exhausted"
+
+# ───────────────────────────── 9 ─────────────────────────────
+- id: B9
+  title: "Trauma Counselling"
+  limit_per_beneficiary: 10000
+  eligible_events: ["Victim/witness violent crime", "Accident involvement",
+                    "Life-threatening diagnosis (self or loved one)",
+                    "Bereavement"]
+  exclusions: ["Psychiatrist fees unless rule B4/B5 applies", "Pre-existing trauma"]
+
+# ───────────────────────────── 10 ────────────────────────────
+- id: B10
+  title: "Premium Waiver"
+  limits:
+    scheme_contribution: 5000   # max per month
+    gap_premium: "full"
+    duration_months: 6
+  trigger: "Accidental death/disability of main insured"
+  required_proofs: ["Death certificate or medical boarding",
+                    "New scheme membership certificate showing contributions"]
+
+# ───────────────────────────── 11 ────────────────────────────
+- id: B11
+  title: "Charges Above Scheme Sub-limits"
+  limit_per_beneficiary: 35000
+  covered_items: ["Scans", "Procedures", "Prostheses",
+                  "Extra 5 days mental-health or rehab stay"]
+
+# ───────────────────────────── 12 ────────────────────────────
+- id: B12
+  title: "Waiting-Period Logic"
+  # Implemented via global `waiting_periods` block above
+  implements_waiting_period_block: true
