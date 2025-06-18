@@ -43,13 +43,11 @@ Starts a FastAPI server on `http://localhost:8000` that exposes a single `/asses
 make run-frontend
 ```
 
-Launches the React based UI where you can upload PDF documents or images and view the assessment results.
+Launches the React based UI where you can upload PDF documents and view the assessment results.
 
-### Upload Documents
+### Upload PDFs
 
-You can now upload JPG/PNG/HEIC photos; they'll be OCR'd automatically.
-
-The app requires three documents:
+The app requires three PDFs:
 
 1. Medical Scheme Statement
 2. Provider Invoice

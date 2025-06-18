@@ -16,7 +16,7 @@ import numpy as np
 import yaml
 
 from config.openai_config import get_client
-from ocr.pdf_reader import extract_text
+from ocr.pdf_reader import extract_text_from_pdf
 from utils.text_utils import chunk_text
 
 INDEX_PATH = os.path.join(os.path.dirname(__file__), "policy_index.faiss")
@@ -44,7 +44,7 @@ def build_index(path: str):
     if ext in {".yml", ".yaml"}:
         chunks = load_yaml_as_chunks(path)
     elif ext == ".pdf":
-        text = extract_text(path)
+        text = extract_text_from_pdf(path)
         chunks = chunk_text(text)
     else:
         raise ValueError("Unsupported file type. Use .pdf, .yml, or .yaml")
