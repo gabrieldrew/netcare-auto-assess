@@ -18,7 +18,7 @@ def extract_text_from_pdf(file_obj_or_path):
     for page in doc:
         txt = page.get_text()
         if len(txt.strip()) < 30:  # likely scanned
-            pix = page.get_pixmap(dpi=400)
+            pix = page.get_pixmap(dpi=600)
             img = Image.open(io.BytesIO(pix.tobytes()))
             txt = pytesseract.image_to_string(img)
         full_text += txt + "\n"
