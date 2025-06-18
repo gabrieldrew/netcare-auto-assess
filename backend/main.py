@@ -75,7 +75,7 @@ async def assess_claim_endpoint(
         pdf_b64 = base64.b64encode(pdf_buffer.getvalue()).decode()
 
         logging.info("Assessment completed successfully")
-        logging.debug(
+        logging.info(
             json.dumps(
                 {"claimData": claim_data, "formData": form_data, "result": result},
                 indent=2,
