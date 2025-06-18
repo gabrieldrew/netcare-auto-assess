@@ -19,11 +19,23 @@ export default function Home() {
 
     setLoading(true);
     try {
+      console.log('Submitting assessment request');
       const res = await fetch('http://localhost:8000/assess', {
         method: 'POST',
         body: formData,
       });
+      if (!res.ok) {
+        const text = await res.text();
+        console.error('Server error', res.status, text);
+        alert('Assessment failed. See console for details.');
+        setLoading(false);
+        return;
+      }
       const data = await res.json();
+      console.log('Assessment response', data);
+      if (!data.result) {
+        console.error('Unexpected response structure', data);
+      }
       setResult(data);
     } catch (error) {
       console.error('Assessment failed:', error);
