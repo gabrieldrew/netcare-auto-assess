@@ -27,3 +27,4 @@ def extract_text_from_image(file_obj_or_path):
     # Use English language and automatic page segmentation for better results
     config = "--oem 3 --psm 6"
     return pytesseract.image_to_string(img, lang="eng", config=config)
+
