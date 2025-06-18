@@ -501,145 +501,391 @@ footer { visibility: hidden; }
     margin: 0;
 }
 
-/* Results Section */
+/* Results Section - Adjusted spacing and typography */
 .results-section {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 }
 
-.result-card {
-    background: rgba(15, 32, 39, 0.7);
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    border-radius: 16px;
-    padding: 40px;
-    backdrop-filter: blur(20px);
+.results-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
     margin-bottom: 24px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.result-header {
+/* Main Assessment Card */
+.assessment-card {
+    background: linear-gradient(135deg, rgba(15, 32, 39, 0.8) 0%, rgba(27, 75, 90, 0.7) 100%);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 16px;
+    padding: 24px;
+    backdrop-filter: blur(20px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.1),
+        0 4px 16px rgba(34, 211, 238, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.assessment-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #22D3EE 0%, #0891B2 50%, #22D3EE 100%);
+    opacity: 0.8;
+}
+
+.assessment-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(34, 211, 238, 0.2);
 }
 
-.result-header h2 {
-    color: #FFFFFF;
-    font-size: 28px;
-    font-weight: 700;
-    margin: 0;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-}
-
-.status-badge {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0.5px;
-}
-
-.status-covered {
-    background: rgba(5, 150, 105, 0.15);
-    color: #059669;
-    border: 1px solid rgba(5, 150, 105, 0.3);
-}
-
-.status-declined {
-    background: rgba(220, 38, 38, 0.15);
-    color: #DC2626;
-    border: 1px solid rgba(220, 38, 38, 0.3);
-}
-
-.result-section {
-    margin-bottom: 32px;
-}
-
-.result-section h3 {
+.assessment-title {
     color: #FFFFFF;
     font-size: 20px;
     font-weight: 600;
-    margin-bottom: 16px;
+    margin: 0;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.3px;
+}
+
+.status-badge-large {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-badge-large::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.status-badge-large:hover::before {
+    left: 100%;
+}
+
+.status-covered-large {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.2) 0%, rgba(5, 150, 105, 0.1) 100%);
+    color: #10B981;
+    border-color: rgba(5, 150, 105, 0.4);
+}
+
+.status-declined-large {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(220, 38, 38, 0.1) 100%);
+    color: #EF4444;
+    border-color: rgba(220, 38, 38, 0.4);
+}
+
+/* Benefits Section */
+.benefits-section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 3px;
+    height: 16px;
+    background: linear-gradient(135deg, #22D3EE, #0891B2);
+    border-radius: 2px;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+.benefit-card {
+    background: rgba(34, 211, 238, 0.08);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.benefit-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(135deg, #22D3EE, #0891B2);
+    transition: width 0.3s ease;
+}
+
+.benefit-card:hover {
+    background: rgba(34, 211, 238, 0.12);
+    border-color: rgba(34, 211, 238, 0.3);
+    transform: translateX(4px);
+}
+
+.benefit-card:hover::before {
+    width: 6px;
+}
+
+.benefit-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 14px;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Explanation Section */
+.explanation-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(34, 211, 238, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.explanation-text {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.5;
+    margin: 0;
+    font-size: 14px;
+    text-align: justify;
+}
+
+/* Summary Card (Right Side) */
+.summary-card {
+    background: linear-gradient(135deg, rgba(15, 32, 39, 0.9) 0%, rgba(27, 75, 90, 0.8) 100%);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.1),
+        0 4px 16px rgba(34, 211, 238, 0.08);
+    height: fit-content;
+    position: sticky;
+    top: 140px;
+}
+
+.summary-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.summary-title {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.benefit-item {
-    background: rgba(34, 211, 238, 0.1);
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 8px;
-    transition: all 0.3s ease;
-}
-
-.benefit-item:hover {
-    background: rgba(34, 211, 238, 0.15);
-    border-color: rgba(34, 211, 238, 0.3);
-}
-
-.benefit-item span {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 15px;
-}
-
-.financial-highlight {
-    background: rgba(5, 150, 105, 0.1);
-    border: 1px solid rgba(5, 150, 105, 0.3);
+.financial-highlight-large {
+    background: linear-gradient(135deg, rgba(5, 150, 105, 0.15) 0%, rgba(5, 150, 105, 0.08) 100%);
+    border: 2px solid rgba(5, 150, 105, 0.3);
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px;
     text-align: center;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
 }
 
-.financial-highlight p {
-    color: #059669;
+.financial-highlight-large::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(5, 150, 105, 0.1) 0%, transparent 70%);
+    animation: financialGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes financialGlow {
+    0% { opacity: 0.5; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); }
+}
+
+.financial-amount {
+    color: #10B981;
     font-weight: 700;
     font-size: 24px;
     margin: 0;
+    text-shadow: 0 1px 4px rgba(16, 185, 129, 0.3);
+    position: relative;
+    z-index: 1;
 }
 
-.explanation-box {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 24px;
-    border: 1px solid rgba(34, 211, 238, 0.1);
-}
-
-.explanation-box p {
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.6;
-    margin: 0;
-    font-size: 16px;
-}
-
-/* Download Section */
-.download-card {
-    background: rgba(15, 32, 39, 0.7);
-    border: 1px solid rgba(34, 211, 238, 0.2);
-    border-radius: 16px;
-    padding: 32px;
-    backdrop-filter: blur(20px);
-    text-align: center;
-    margin-bottom: 24px;
-}
-
-.download-card h3 {
-    color: #FFFFFF;
-    font-size: 20px;
+.financial-amount::before {
+    content: 'R ';
     font-weight: 600;
-    margin-bottom: 16px;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    color: #10B981;
 }
 
-.download-card .help-text {
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
-    margin-top: 12px;
+.financial-label {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 6px;
     margin-bottom: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.download-button-container {
+    width: 100%;
+}
+
+/* Enhanced Technical Details */
+.technical-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    margin-bottom: 32px;
+}
+
+.technical-card {
+    background: linear-gradient(135deg, rgba(15, 32, 39, 0.8) 0%, rgba(27, 75, 90, 0.7) 100%);
+    border: 1px solid rgba(34, 211, 238, 0.25);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.1),
+        0 4px 16px rgba(34, 211, 238, 0.08);
+}
+
+/* Enhanced Disclaimer - Smaller and more compact */
+.disclaimer-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    margin-bottom: 40px;
+}
+
+.disclaimer-card {
+    background: linear-gradient(135deg, rgba(252, 163, 17, 0.12) 0%, rgba(252, 163, 17, 0.06) 100%);
+    border: 1px solid rgba(252, 163, 17, 0.25);
+    border-radius: 10px;
+    padding: 16px 20px;
+    border-left: 4px solid #FCA311;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 6px 20px rgba(252, 163, 17, 0.08);
+}
+
+.disclaimer-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.disclaimer-icon {
+    width: 18px;
+    height: 18px;
+    color: #FCA311;
+    flex-shrink: 0;
+    margin-top: 1px;
+    filter: drop-shadow(0 1px 2px rgba(252, 163, 17, 0.3));
+}
+
+.disclaimer-text h4 {
+    color: #FCA311;
+    font-weight: 600;
+    font-size: 13px;
+    margin: 0 0 6px 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.disclaimer-text p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Responsive Design for Results */
+@media (max-width: 1200px) {
+    .results-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .summary-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .assessment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .assessment-card,
+    .summary-card,
+    .technical-card {
+        padding: 16px;
+    }
+    
+    .financial-amount {
+        font-size: 20px;
+    }
+    
+    .assessment-title {
+        font-size: 18px;
+    }
+    
+    .disclaimer-card {
+        padding: 12px 16px;
+    }
 }
 
 /* Enhanced Download Button */

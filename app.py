@@ -210,69 +210,75 @@ def display_processing_status():
 
 
 def display_assessment_result(result, claim_data, claim_form_data):
-    """Display assessment result."""
+    """Display assessment result with professional layout."""
     st.markdown('<div class="results-section">', unsafe_allow_html=True)
     
-    # Main result card
-    st.markdown('<div class="result-card">', unsafe_allow_html=True)
+    # Main results container with grid layout
+    st.markdown('<div class="results-container">', unsafe_allow_html=True)
+    
+    # Left column - Main assessment details
+    st.markdown('<div class="assessment-card">', unsafe_allow_html=True)
     
     # Header with status
-    status_class = "status-covered" if result["covered"] else "status-declined"
-    status_text = "CLAIM APPROVED" if result["covered"] else "CLAIM DECLINED"
+    status_class = "status-covered-large" if result["covered"] else "status-declined-large"
+    status_text = "Claim Approved" if result["covered"] else "Claim Declined"
     
     st.markdown(f"""
-    <div class="result-header">
-        <h2>Assessment Result</h2>
-        <div class="status-badge {status_class}">
+    <div class="assessment-header">
+        <h1 class="assessment-title">Assessment Result</h1>
+        <div class="status-badge-large {status_class}">
             {status_text}
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Applicable benefits
+    # Benefits section
     if result["benefits"]:
         st.markdown("""
-        <div class="result-section">
-            <h3>Applicable Benefits</h3>
+        <div class="benefits-section">
+            <h2 class="section-title">Applicable Benefits</h2>
+            <div class="benefits-grid">
         """, unsafe_allow_html=True)
         
         for benefit in result["benefits"]:
             st.markdown(f"""
-            <div class="benefit-item">
-                <span>• {benefit}</span>
+            <div class="benefit-card">
+                <p class="benefit-text">{benefit}</p>
             </div>
             """, unsafe_allow_html=True)
         
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown('</div></div>', unsafe_allow_html=True)
     
-    # Payable amount
-    if result["payable_amount_ZAR"]:
-        st.markdown(f"""
-        <div class="result-section">
-            <h3>Financial Assessment</h3>
-            <div class="financial-highlight">
-                <p>Estimated Payable Amount: {result["payable_amount_ZAR"]}</p>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # Explanation
+    # Explanation section
     st.markdown(f"""
-    <div class="result-section">
-        <h3>Assessment Details</h3>
-        <div class="explanation-box">
-            <p>{result["explanation"]}</p>
-        </div>
+    <div class="explanation-section">
+        <h2 class="section-title">Assessment Details</h2>
+        <p class="explanation-text">{result["explanation"]}</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown('</div>', unsafe_allow_html=True)  # Close result card
+    st.markdown('</div>', unsafe_allow_html=True)  # Close assessment card
     
-    # PDF Download section
+    # Right column - Summary card
+    st.markdown('<div class="summary-card">', unsafe_allow_html=True)
+    
     st.markdown("""
-    <div class="download-card">
-        <h3>Download Assessment Report</h3>
+    <div class="summary-header">
+        <h2 class="summary-title">Claim Summary</h2>
+    </div>
     """, unsafe_allow_html=True)
+    
+    # Financial highlight if amount exists
+    if result["payable_amount_ZAR"]:
+        st.markdown(f"""
+        <div class="financial-highlight-large">
+            <h3 class="financial-amount">{result["payable_amount_ZAR"]}</h3>
+            <p class="financial-label">Estimated Payable Amount</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Action buttons
+    st.markdown('<div class="action-buttons">', unsafe_allow_html=True)
     
     # Generate PDF
     pdf_buffer = generate_assessment_pdf(claim_data, result, claim_form_data)
@@ -280,40 +286,52 @@ def display_assessment_result(result, claim_data, claim_form_data):
     filename = f"GapCare_Assessment_{timestamp}.pdf"
     
     st.download_button(
-        label="Download Comprehensive PDF Report",
+        label="Download PDF Report",
         data=pdf_buffer.getvalue(),
         file_name=filename,
         mime="application/pdf",
-        use_container_width=True
+        use_container_width=True,
+        key="download_summary"
     )
     
-    st.markdown('<p class="help-text">Download a detailed PDF report of this assessment for your records</p>', unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)  # Close download card
-    
+    st.markdown('</div>', unsafe_allow_html=True)  # Close action buttons
+    st.markdown('</div>', unsafe_allow_html=True)  # Close summary card
+    st.markdown('</div>', unsafe_allow_html=True)  # Close results container
     st.markdown('</div>', unsafe_allow_html=True)  # Close results section
 
 
 def display_technical_details(claim_data, claim_form_data, result):
-    """Display technical details."""
+    """Display technical details with enhanced styling."""
     st.markdown('<div class="technical-section">', unsafe_allow_html=True)
     
-    with st.expander("Technical Details & Raw Data", expanded=False):
-        tab1, tab2, tab3 = st.tabs(["📊 Extracted Claim Data", "📝 Claim Form Fields", "🔍 Assessment Result"])
+    with st.expander(" Technical Details & Raw Data", expanded=False):
+        st.markdown('<div style="padding: 20px;">', unsafe_allow_html=True)
+        
+        tab1, tab2, tab3 = st.tabs([
+            "📊 Extracted Claim Data", 
+            "📝 Claim Form Fields", 
+            "🎯 Assessment Result"
+        ])
         
         with tab1:
+            st.markdown("#### Medical Aid & Provider Data")
             st.json(claim_data)
         
         with tab2:
+            st.markdown("#### Parsed Form Information")
             st.json(claim_form_data)
         
         with tab3:
+            st.markdown("#### Complete Assessment Output")
             st.json(result)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
     
     st.markdown('</div>', unsafe_allow_html=True)
 
 
 def display_disclaimer():
-    """Display disclaimer."""
+    """Display enhanced disclaimer."""
     st.markdown("""
     <div class="disclaimer-section">
         <div class="disclaimer-card">
@@ -323,7 +341,7 @@ def display_disclaimer():
                 </svg>
                 <div class="disclaimer-text">
                     <h4>Important Notice</h4>
-                    <p>This is a demonstration system for testing purposes only. All assessments require human verification and approval before any payment processing occurs. Results shown are for demonstration purposes and should not be considered as final claim decisions.</p>
+                    <p>This is a demonstration system for testing and evaluation purposes only. All assessments shown are simulated results and require human verification and approval before any payment processing occurs. Results displayed should not be considered as final claim decisions or binding commitments.</p>
                 </div>
             </div>
         </div>
