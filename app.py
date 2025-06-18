@@ -1,8 +1,9 @@
 import streamlit as st
+
+from assessment.assessor import assess_claim
 from ocr.pdf_reader import extract_text_from_pdf
 from parsing.statement_parser import parse_statement
 from retrieval.vector_search import load_policy_index, retrieve_rules
-from assessment.assessor import assess_claim
 
 st.title("GapCare Claim Pre‑Assessor (Demo)")
 

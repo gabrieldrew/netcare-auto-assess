@@ -1,5 +1,9 @@
-import io, fitz, pytesseract
+import io
+
+import fitz
+import pytesseract
 from PIL import Image
+
 
 def extract_text_from_pdf(file_obj_or_path):
     """Extracts readable text, OCR'ing pages that are image‑only."""
