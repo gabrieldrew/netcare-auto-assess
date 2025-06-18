@@ -1,3 +1,69 @@
+# NetcarePlus GapCare Assessment System
+
+An AI-powered claims assessment system for GapCover insurance policies that automatically processes medical documents and generates claim assessments with detailed PDF reports.
+
+## 🏗️ Tech Stack
+
+### Backend (Python)
+- **Framework**: FastAPI - High-performance web framework for building APIs
+- **AI/ML**: 
+  - OpenAI GPT-4o-mini - For document parsing and claim assessment
+  - OpenAI text-embedding-3-large - For semantic search and rule retrieval
+- **Document Processing**:
+  - PyMuPDF (fitz) - PDF text extraction
+  - Pytesseract - OCR for scanned documents  
+  - Pillow (PIL) - Image processing
+- **Vector Database**: FAISS - Facebook AI Similarity Search for policy rule embeddings
+- **Text Processing**: LangChain - Text splitting and chunking utilities
+- **PDF Generation**: ReportLab - Professional PDF report creation
+- **Configuration**: 
+  - PyYAML - Policy rules configuration
+  - python-dotenv - Environment variable management
+- **Server**: Uvicorn - ASGI server with auto-reload for development
+
+### Frontend (JavaScript/React)
+- **Framework**: Next.js 13.5.6 - React framework with server-side rendering
+- **Styling**: Tailwind CSS - Utility-first CSS framework with custom Netcare branding
+- **UI Components**: Custom React components with Netcare design system
+- **Build Tools**: 
+  - PostCSS - CSS processing
+  - Autoprefixer - Cross-browser CSS compatibility
+
+### Data & Storage
+- **Policy Rules**: YAML configuration files for flexible rule management
+- **Vector Index**: FAISS binary index files for fast similarity search
+- **File Handling**: Multipart form data for PDF uploads
+- **Caching**: Pickle serialization for policy chunks metadata
+
+### System Dependencies
+- **OCR Engine**: Tesseract OCR - Open source optical character recognition
+- **PDF Utils**: Poppler - PDF rendering library for document processing
+- **Python Runtime**: Python 3.x with virtual environment isolation
+
+### Development & Deployment
+- **Package Management**: 
+  - pip (Python dependencies)
+  - npm (Node.js dependencies)
+- **Build System**: Custom Makefile for streamlined setup and execution
+- **Version Control**: Git with comprehensive .gitignore
+- **Environment**: Virtual environment (venv) for Python dependency isolation
+
+### AI Model Integration
+- **Primary Model**: GPT-4o-mini
+  - JSON-structured responses for reliable data extraction
+  - Temperature 0.0 for consistent, deterministic outputs
+  - Custom prompts for medical document understanding
+- **Embedding Model**: text-embedding-3-large
+  - High-dimensional vector representations for semantic search
+  - Policy rule retrieval based on claim content similarity
+
+### Key Features
+- **Intelligent Document Processing**: OCR fallback for scanned PDFs
+- **Semantic Rule Matching**: Vector similarity search for relevant policy rules
+- **Structured Data Extraction**: AI-powered parsing of claim forms and statements
+- **Professional Reporting**: Branded PDF generation with detailed assessments
+- **Multi-format Support**: PDF, YAML configuration, and JSON data interchange
+
 ## 🛠 Makefile Usage
 
 You can use the provided `Makefile` to set up and run the demo easily.
